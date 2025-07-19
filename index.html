@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>การแข่งขันจิตรกรรมเด็กและเยาวชน ครั้งที่ 2</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Kanit', sans-serif;
+        }
+        
+        /* Animated gradient background */
+        .gradient-bg {
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
+        
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        /* Floating animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .float-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        /* Pulse animation */
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        /* Color transition */
+        .color-transition {
+            transition: all 0.5s ease;
+        }
+        
+        /* Paint brush stroke effect */
+        .brush-stroke {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .brush-stroke::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: -10px;
+            right: -10px;
+            height: 20px;
+            background: currentColor;
+            opacity: 0.3;
+            border-radius: 50%;
+            filter: blur(10px);
+            animation: brush 3s ease-in-out infinite;
+        }
+        
+        @keyframes brush {
+            0%, 100% { transform: scaleX(1); }
+            50% { transform: scaleX(1.2); }
+        }
+        
+        /* Dark mode styles */
+        .dark-mode {
+            background-color: #1a1a2e;
+            color: #eee;
+        }
+        
+        .dark-mode .card-bg {
+            background-color: #16213e;
+        }
+        
+        .dark-mode .text-gray-600 {
+            color: #cbd5e1;
+        }
+        
+        /* Sparkle effect */
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; transform: scale(0); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+        
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: white;
+            border-radius: 50%;
+            animation: sparkle 2s linear infinite;
+        }
+    </style>
+</head>
+<body class="min-h-screen gradient-bg color-transition">
+    <!-- Sparkle effects -->
+    <div class="sparkle" style="top: 10%; left: 20%; animation-delay: 0s;"></div>
+    <div class="sparkle" style="top: 20%; left: 80%; animation-delay: 0.5s;"></div>
+    <div class="sparkle" style="top: 60%; left: 10%; animation-delay: 1s;"></div>
+    <div class="sparkle" style="top: 80%; left: 90%; animation-delay: 1.5s;"></div>
+    
+    <!-- Dark mode toggle -->
+    <div class="fixed top-4 right-4 z-50">
+        <button id="darkModeToggle" class="bg-white dark:bg-gray-800 p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-110">
+            <svg class="w-6 h-6" id="sunIcon" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"></path>
+            </svg>
+            <svg class="w-6 h-6 hidden" id="moonIcon" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+        </button>
+    </div>
+    
+    <div class="container mx-auto px-4 py-8 relative">
+        <!-- Main content card -->
+        <div class="max-w-4xl mx-auto">
+            <div class="bg-white/90 dark:bg-gray-800/90 backdrop-blur-md rounded-3xl shadow-2xl overflow-hidden transform hover:scale-[1.02] transition-all duration-500">
+                <!-- Header with animation -->
+                <div class="bg-gradient-to-r from-purple-600 to-pink-600 p-8 text-white text-center relative overflow-hidden">
+                    <div class="absolute inset-0 bg-black/20"></div>
+                    <div class="relative z-10">
+                        <h1 class="text-3xl md:text-5xl font-bold mb-2 float-animation">
+                            <span class="brush-stroke">🎨 การแข่งขันจิตรกรรม</span>
+                        </h1>
+                        <h2 class="text-2xl md:text-4xl font-semibold">เด็กและเยาวชน ครั้งที่ 2</h2>
+                        <div class="mt-4 inline-block">
+                            <span class="bg-yellow-400 text-purple-900 px-6 py-2 rounded-full font-semibold text-lg pulse-animation inline-block">
+                                เปิดรับสมัครแล้ว! 🎉
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Main image -->
+                <div class="p-6 md:p-8">
+                    <div class="mb-8 rounded-2xl overflow-hidden shadow-xl transform hover:scale-105 transition-transform duration-500">
+                        <img src="https://lh5.googleusercontent.com/d/13c10M6Ki4xfHnVBCeZPH39y2bj-g16jv" 
+                             alt="การแข่งขันจิตรกรรมเด็กและเยาวชน" 
+                             class="w-full h-auto object-cover">
+                    </div>
+                    
+                    <!-- Registration period -->
+                    <div class="bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-2xl p-6 mb-8 transform hover:scale-105 transition-all duration-300">
+                        <h3 class="text-2xl font-bold mb-2 text-center">📅 ระยะเวลารับสมัคร</h3>
+                        <p class="text-xl text-center">ตั้งแต่วันนี้ - 8 สิงหาคม 2568</p>
+                    </div>
+                    
+                    <!-- Features grid -->
+                    <div class="grid md:grid-cols-3 gap-4 mb-8">
+                        <div class="bg-pink-100 dark:bg-pink-900/30 rounded-xl p-4 text-center transform hover:scale-110 transition-all duration-300">
+                            <div class="text-4xl mb-2">🏆</div>
+                            <h4 class="font-semibold text-pink-800 dark:text-pink-200">รางวัลมากมาย</h4>
+                        </div>
+                        <div class="bg-blue-100 dark:bg-blue-900/30 rounded-xl p-4 text-center transform hover:scale-110 transition-all duration-300">
+                            <div class="text-4xl mb-2">👦👧</div>
+                            <h4 class="font-semibold text-blue-800 dark:text-blue-200">เด็กและเยาวชน</h4>
+                        </div>
+                        <div class="bg-green-100 dark:bg-green-900/30 rounded-xl p-4 text-center transform hover:scale-110 transition-all duration-300">
+                            <div class="text-4xl mb-2">🎨</div>
+                            <h4 class="font-semibold text-green-800 dark:text-green-200">แสดงความคิดสร้างสรรค์</h4>
+                        </div>
+                    </div>
+                    
+                    <!-- QR Code section -->
+                    <div class="bg-gradient-to-br from-yellow-100 to-orange-100 dark:from-yellow-900/30 dark:to-orange-900/30 rounded-2xl p-8 text-center">
+                        <h3 class="text-2xl font-bold mb-4 text-gray-800 dark:text-gray-200">
+                            📱 สแกน QR Code เพื่อสมัคร
+                        </h3>
+                        <div class="inline-block bg-white p-4 rounded-xl shadow-lg pulse-animation">
+                            <img src="https://lh5.googleusercontent.com/d/1CFKcvf0ImU069OM3RfWf_mu9ydxW6RpZ" 
+                                 alt="QR Code สมัครเข้าร่วมกิจกรรม" 
+                                 class="w-48 h-48 md:w-64 md:h-64 mx-auto">
+                        </div>
+                        <p class="mt-4 text-lg font-medium text-gray-700 dark:text-gray-300">
+                            สมัครง่าย เพียงสแกน QR Code
+                        </p>
+                    </div>
+                    
+                    <!-- Call to action -->
+                    <div class="mt-8 text-center">
+                        <button class="bg-gradient-to-r from-purple-600 to-pink-600 text-white text-xl font-bold py-4 px-8 rounded-full transform hover:scale-110 transition-all duration-300 shadow-lg hover:shadow-2xl">
+                            สมัครเข้าร่วมกิจกรรมเลย! 🚀
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Footer -->
+            <div class="text-center mt-8 text-white">
+                <p class="text-lg">มาร่วมสร้างสรรค์ผลงานศิลปะไปด้วยกัน 🎨✨</p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Dark mode toggle
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const sunIcon = document.getElementById('sunIcon');
+        const moonIcon = document.getElementById('moonIcon');
+        const body = document.body;
+        
+        darkModeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            sunIcon.classList.toggle('hidden');
+            moonIcon.classList.toggle('hidden');
+            
+            // Change gradient background for dark mode
+            if (body.classList.contains('dark-mode')) {
+                body.style.background = 'linear-gradient(-45deg, #0f3460, #16213e, #1a1a2e, #0f0e17)';
+            } else {
+                body.style.background = '';
+            }
+        });
+        
+        // Add random sparkles
+        function createSparkle() {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+            sparkle.style.top = Math.random() * 100 + '%';
+            sparkle.style.left = Math.random() * 100 + '%';
+            sparkle.style.animationDelay = Math.random() * 2 + 's';
+            document.body.appendChild(sparkle);
+            
+            setTimeout(() => {
+                sparkle.remove();
+            }, 2000);
+        }
+        
+        setInterval(createSparkle, 500);
+        
+        // Smooth scroll effect
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
