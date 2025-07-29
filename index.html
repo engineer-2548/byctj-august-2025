@@ -5,17 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>การแข่งขันจิตรกรรมเด็กและเยาวชน ครั้งที่ 2</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;900&family=Prompt:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         * {
-            font-family: 'Kanit', sans-serif;
+            font-family: 'Kanit', 'Prompt', sans-serif;
+        }
+        
+        /* Smooth scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Hide scrollbar but keep functionality */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(45deg, #ee7752, #e73c7e);
+            border-radius: 5px;
         }
         
         /* Animated gradient background */
         .gradient-bg {
             background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
             background-size: 400% 400%;
-            animation: gradient 15s ease infinite;
+            animation: gradient 20s ease infinite;
+            position: relative;
+            overflow: hidden;
         }
         
         @keyframes gradient {
@@ -24,230 +45,598 @@
             100% { background-position: 0% 50%; }
         }
         
-        /* Floating animation */
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
+        /* Parallax container */
+        .parallax-container {
+            position: relative;
+            height: 100vh;
+            overflow: hidden;
         }
         
-        .float-animation {
-            animation: float 3s ease-in-out infinite;
+        .parallax-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
         }
         
-        /* Pulse animation */
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+        /* Floating paint drops */
+        .paint-drop {
+            position: absolute;
+            border-radius: 50% 40% 60% 30%;
+            opacity: 0.7;
+            filter: blur(1px);
+            animation: float-drop 15s infinite ease-in-out;
         }
         
-        .pulse-animation {
-            animation: pulse 2s ease-in-out infinite;
+        @keyframes float-drop {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg) scale(1);
+            }
+            33% {
+                transform: translateY(-50px) rotate(120deg) scale(1.1);
+            }
+            66% {
+                transform: translateY(-20px) rotate(240deg) scale(0.9);
+            }
         }
         
-        /* Color transition */
-        .color-transition {
-            transition: all 0.5s ease;
-        }
-        
-        /* Paint brush stroke effect */
-        .brush-stroke {
+        /* Brush stroke animation */
+        .brush-stroke-animated {
             position: relative;
             display: inline-block;
         }
         
-        .brush-stroke::after {
+        .brush-stroke-animated::before {
             content: '';
             position: absolute;
             bottom: -5px;
-            left: -10px;
-            right: -10px;
-            height: 20px;
-            background: currentColor;
-            opacity: 0.3;
-            border-radius: 50%;
-            filter: blur(10px);
-            animation: brush 3s ease-in-out infinite;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3);
+            animation: brush-draw 2s ease-out forwards;
+            border-radius: 2px;
         }
         
-        @keyframes brush {
-            0%, 100% { transform: scaleX(1); }
-            50% { transform: scaleX(1.2); }
+        @keyframes brush-draw {
+            to {
+                width: 100%;
+            }
         }
         
-        /* Dark mode styles */
-        .dark-mode {
-            background-color: #1a1a2e;
-            color: #eee;
+        /* Countdown styles */
+        .countdown-container {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
         }
         
-        .dark-mode .card-bg {
-            background-color: #16213e;
+        .countdown-item {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            padding: 1.5rem;
+            min-width: 100px;
+            text-align: center;
+            transform: translateY(0);
+            transition: all 0.3s ease;
         }
         
-        .dark-mode .text-gray-600 {
-            color: #cbd5e1;
+        .countdown-item:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
         }
         
-        /* Sparkle effect */
-        @keyframes sparkle {
-            0%, 100% { opacity: 0; transform: scale(0); }
-            50% { opacity: 1; transform: scale(1); }
+        .countdown-number {
+            font-size: 3rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #fff, #f0f0f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
         }
         
-        .sparkle {
+        .countdown-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        /* Canvas particles container */
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        /* Entrance animations */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        
+        .fade-in-up.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Stagger animation */
+        .stagger-item {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease-out;
+        }
+        
+        .stagger-item.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Glow effect */
+        .glow-effect {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .glow-effect::before {
+            content: '';
             position: absolute;
-            width: 4px;
-            height: 4px;
-            background: white;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+        
+        .glow-effect:hover::before {
+            opacity: 1;
+        }
+        
+        /* Magnetic button effect */
+        .magnetic-button {
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+        
+        /* 3D card effect */
+        .card-3d {
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+        }
+        
+        .card-3d:hover {
+            transform: rotateY(5deg) rotateX(-5deg);
+        }
+        
+        /* Liquid effect */
+        .liquid-bg {
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.3), transparent 50%),
+                        radial-gradient(circle at 80% 50%, rgba(255, 107, 107, 0.3), transparent 50%),
+                        radial-gradient(circle at 40% 80%, rgba(255, 206, 84, 0.3), transparent 50%);
+            animation: liquid 20s ease-in-out infinite;
+        }
+        
+        @keyframes liquid {
+            0%, 100% { transform: rotate(0deg) scale(1); }
+            33% { transform: rotate(180deg) scale(1.1); }
+            66% { transform: rotate(360deg) scale(0.9); }
+        }
+        
+        /* Premium hover effect */
+        .premium-hover {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .premium-hover::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 0;
+            height: 0;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, transparent 70%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .premium-hover:hover::after {
+            width: 200%;
+            height: 200%;
+        }
+        
+        /* Morphing blob */
+        .blob {
+            position: absolute;
             border-radius: 50%;
-            animation: sparkle 2s linear infinite;
+            filter: blur(40px);
+            opacity: 0.6;
+            animation: morph 15s ease-in-out infinite;
+        }
+        
+        @keyframes morph {
+            0%, 100% {
+                border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+                transform: rotate(0deg);
+            }
+            50% {
+                border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
+                transform: rotate(180deg);
+            }
+        }
+        
+        /* Loading animation */
+        .loading-animation {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Text reveal animation */
+        .text-reveal {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .text-reveal::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s;
+        }
+        
+        .text-reveal:hover::after {
+            left: 100%;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .countdown-container {
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+            
+            .countdown-item {
+                min-width: 80px;
+                padding: 1rem;
+            }
+            
+            .countdown-number {
+                font-size: 2rem;
+            }
         }
     </style>
 </head>
-<body class="min-h-screen gradient-bg color-transition">
-    <!-- Sparkle effects -->
-    <div class="sparkle" style="top: 10%; left: 20%; animation-delay: 0s;"></div>
-    <div class="sparkle" style="top: 20%; left: 80%; animation-delay: 0.5s;"></div>
-    <div class="sparkle" style="top: 60%; left: 10%; animation-delay: 1s;"></div>
-    <div class="sparkle" style="top: 80%; left: 90%; animation-delay: 1.5s;"></div>
+<body class="min-h-screen gradient-bg">
+    <!-- Canvas for particle effects -->
+    <canvas id="particles-canvas"></canvas>
     
-    <!-- Dark mode toggle -->
-    <div class="fixed top-4 right-4 z-50">
-        <button id="darkModeToggle" class="bg-white dark:bg-gray-800 p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-110">
-            <svg class="w-6 h-6" id="sunIcon" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"></path>
-            </svg>
-            <svg class="w-6 h-6 hidden" id="moonIcon" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
-            </svg>
-        </button>
-    </div>
+    <!-- Morphing blobs background -->
+    <div class="blob" style="width: 400px; height: 400px; background: rgba(238, 119, 82, 0.4); top: -200px; left: -200px;"></div>
+    <div class="blob" style="width: 300px; height: 300px; background: rgba(231, 60, 126, 0.4); top: 50%; right: -150px;"></div>
+    <div class="blob" style="width: 350px; height: 350px; background: rgba(35, 166, 213, 0.4); bottom: -175px; left: 30%;"></div>
     
-    <div class="container mx-auto px-4 py-8 relative">
-        <!-- Main content card -->
-        <div class="max-w-4xl mx-auto">
-            <div class="bg-white/90 dark:bg-gray-800/90 backdrop-blur-md rounded-3xl shadow-2xl overflow-hidden transform hover:scale-[1.02] transition-all duration-500">
-                <!-- Header with animation -->
-                <div class="bg-gradient-to-r from-purple-600 to-pink-600 p-8 text-white text-center relative overflow-hidden">
-                    <div class="absolute inset-0 bg-black/20"></div>
-                    <div class="relative z-10">
-                        <h1 class="text-3xl md:text-5xl font-bold mb-2 float-animation">
-                            <span class="brush-stroke">🎨 การแข่งขันจิตรกรรม</span>
-                        </h1>
-                        <h2 class="text-2xl md:text-4xl font-semibold">เด็กและเยาวชน ครั้งที่ 2</h2>
-                        <div class="mt-4 inline-block">
-                            <span class="bg-yellow-400 text-purple-900 px-6 py-2 rounded-full font-semibold text-lg pulse-animation inline-block">
-                                เปิดรับสมัครแล้ว! 🎉
-                            </span>
+    <!-- Liquid background effect -->
+    <div class="liquid-bg"></div>
+    
+    <!-- Floating paint drops -->
+    <div class="paint-drop" style="width: 80px; height: 80px; background: rgba(255, 107, 107, 0.6); top: 10%; left: 5%; animation-delay: 0s;"></div>
+    <div class="paint-drop" style="width: 60px; height: 60px; background: rgba(255, 206, 84, 0.6); top: 20%; right: 10%; animation-delay: 2s;"></div>
+    <div class="paint-drop" style="width: 100px; height: 100px; background: rgba(120, 119, 198, 0.6); bottom: 20%; left: 15%; animation-delay: 4s;"></div>
+    <div class="paint-drop" style="width: 70px; height: 70px; background: rgba(255, 159, 243, 0.6); bottom: 10%; right: 20%; animation-delay: 6s;"></div>
+    
+    <div class="container mx-auto px-4 py-8 relative z-10">
+        <!-- Hero Section with Parallax -->
+        <div class="parallax-container mb-16">
+            <div class="parallax-layer flex items-center justify-center">
+                <div class="text-center text-white fade-in-up">
+                    <h1 class="text-5xl md:text-7xl font-black mb-4">
+                        <span class="brush-stroke-animated">🎨 การแข่งขัน</span>
+                    </h1>
+                    <h1 class="text-4xl md:text-6xl font-bold mb-6 text-reveal">
+                        จิตรกรรมเด็กและเยาวชน
+                    </h1>
+                    <h2 class="text-3xl md:text-5xl font-semibold mb-8 opacity-90">
+                        ครั้งที่ 2
+                    </h2>
+                    
+                    <!-- Registration Button -->
+                    <div class="mb-8">
+                        <a href="https://docs.google.com/forms/d/1SJSfuoC4rxYmx_9ewDBWaRZLI87-4FLJBNi-752BBv8/viewform?edit_requested=true" 
+                           target="_blank"
+                           class="magnetic-button inline-block bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-900 px-10 py-4 rounded-full font-bold text-xl shadow-2xl transform hover:scale-110 transition-all duration-300 premium-hover glow-effect">
+                            🎉 เปิดรับสมัครแล้ว! คลิกที่นี่
+                        </a>
+                    </div>
+                    
+                    <!-- Countdown Timer -->
+                    <div class="bg-black/20 backdrop-blur-md rounded-3xl p-6 inline-block">
+                        <h3 class="text-2xl font-semibold mb-4">⏰ นับถอยหลังปิดรับสมัคร</h3>
+                        <div class="countdown-container" id="countdown">
+                            <div class="countdown-item">
+                                <div class="countdown-number" id="days">00</div>
+                                <div class="countdown-label">วัน</div>
+                            </div>
+                            <div class="countdown-item">
+                                <div class="countdown-number" id="hours">00</div>
+                                <div class="countdown-label">ชั่วโมง</div>
+                            </div>
+                            <div class="countdown-item">
+                                <div class="countdown-number" id="minutes">00</div>
+                                <div class="countdown-label">นาที</div>
+                            </div>
+                            <div class="countdown-item">
+                                <div class="countdown-number" id="seconds">00</div>
+                                <div class="countdown-label">วินาที</div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                
-                <!-- Main image -->
-                <div class="p-6 md:p-8">
-                    <div class="mb-8 rounded-2xl overflow-hidden shadow-xl transform hover:scale-105 transition-transform duration-500">
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="max-w-5xl mx-auto">
+            <!-- Competition Details Card -->
+            <div class="bg-white/10 backdrop-blur-lg rounded-3xl p-8 mb-16 card-3d premium-hover fade-in-up">
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <h3 class="text-3xl font-bold text-white mb-6">🏆 รายละเอียดการแข่งขัน</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-start space-x-3 stagger-item">
+                                <span class="text-2xl">🎨</span>
+                                <div>
+                                    <h4 class="font-semibold text-white text-lg">หัวข้อการแข่งขัน</h4>
+                                    <p class="text-white/80">แสดงจินตนาการและความคิดสร้างสรรค์ผ่านงานศิลปะ</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start space-x-3 stagger-item" style="transition-delay: 0.1s;">
+                                <span class="text-2xl">👦</span>
+                                <div>
+                                    <h4 class="font-semibold text-white text-lg">ผู้มีสิทธิ์เข้าร่วม</h4>
+                                    <p class="text-white/80">เด็กและเยาวชนทุกระดับอายุ</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start space-x-3 stagger-item" style="transition-delay: 0.2s;">
+                                <span class="text-2xl">📅</span>
+                                <div>
+                                    <h4 class="font-semibold text-white text-lg">ระยะเวลาสมัคร</h4>
+                                    <p class="text-white/80">ตั้งแต่วันนี้ - 8 สิงหาคม 2568</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start space-x-3 stagger-item" style="transition-delay: 0.3s;">
+                                <span class="text-2xl">🏅</span>
+                                <div>
+                                    <h4 class="font-semibold text-white text-lg">รางวัล</h4>
+                                    <p class="text-white/80">ของรางวัลมูลค่ารวมกว่า 100,000 บาท</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="rounded-2xl overflow-hidden shadow-2xl transform hover:scale-105 transition-transform duration-500">
                         <img src="https://lh5.googleusercontent.com/d/13c10M6Ki4xfHnVBCeZPH39y2bj-g16jv" 
                              alt="การแข่งขันจิตรกรรมเด็กและเยาวชน" 
                              class="w-full h-auto object-cover">
                     </div>
-                    
-                    <!-- Registration period -->
-                    <div class="bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-2xl p-6 mb-8 transform hover:scale-105 transition-all duration-300">
-                        <h3 class="text-2xl font-bold mb-2 text-center">📅 ระยะเวลารับสมัคร</h3>
-                        <p class="text-xl text-center">ตั้งแต่วันนี้ - 8 สิงหาคม 2568</p>
-                    </div>
-                    
-                    <!-- Features grid -->
-                    <div class="grid md:grid-cols-3 gap-4 mb-8">
-                        <div class="bg-pink-100 dark:bg-pink-900/30 rounded-xl p-4 text-center transform hover:scale-110 transition-all duration-300">
-                            <div class="text-4xl mb-2">🏆</div>
-                            <h4 class="font-semibold text-pink-800 dark:text-pink-200">รางวัลมากมาย</h4>
-                        </div>
-                        <div class="bg-blue-100 dark:bg-blue-900/30 rounded-xl p-4 text-center transform hover:scale-110 transition-all duration-300">
-                            <div class="text-4xl mb-2">👦👧</div>
-                            <h4 class="font-semibold text-blue-800 dark:text-blue-200">เด็กและเยาวชน</h4>
-                        </div>
-                        <div class="bg-green-100 dark:bg-green-900/30 rounded-xl p-4 text-center transform hover:scale-110 transition-all duration-300">
-                            <div class="text-4xl mb-2">🎨</div>
-                            <h4 class="font-semibold text-green-800 dark:text-green-200">แสดงความคิดสร้างสรรค์</h4>
-                        </div>
-                    </div>
-                    
-                    <!-- QR Code section -->
-                    <div class="bg-gradient-to-br from-yellow-100 to-orange-100 dark:from-yellow-900/30 dark:to-orange-900/30 rounded-2xl p-8 text-center">
-                        <h3 class="text-2xl font-bold mb-4 text-gray-800 dark:text-gray-200">
-                            📱 สแกน QR Code เพื่อสมัคร
-                        </h3>
-                        <div class="inline-block bg-white p-4 rounded-xl shadow-lg pulse-animation">
-                            <img src="https://lh5.googleusercontent.com/d/1CFKcvf0ImU069OM3RfWf_mu9ydxW6RpZ" 
-                                 alt="QR Code สมัครเข้าร่วมกิจกรรม" 
-                                 class="w-48 h-48 md:w-64 md:h-64 mx-auto">
-                        </div>
-                        <p class="mt-4 text-lg font-medium text-gray-700 dark:text-gray-300">
-                            สมัครง่าย เพียงสแกน QR Code
-                        </p>
-                    </div>
-                    
-                    <!-- Call to action -->
-                    <div class="mt-8 text-center">
-                        <button class="bg-gradient-to-r from-purple-600 to-pink-600 text-white text-xl font-bold py-4 px-8 rounded-full transform hover:scale-110 transition-all duration-300 shadow-lg hover:shadow-2xl">
-                            สมัครเข้าร่วมกิจกรรมเลย! 🚀
-                        </button>
-                    </div>
                 </div>
             </div>
             
+            <!-- Features Grid -->
+            <div class="grid md:grid-cols-3 gap-6 mb-16">
+                <div class="bg-gradient-to-br from-pink-500/20 to-purple-500/20 backdrop-blur-md rounded-2xl p-6 text-center transform hover:scale-105 transition-all duration-300 card-3d fade-in-up premium-hover">
+                    <div class="text-5xl mb-4">🎯</div>
+                    <h4 class="text-xl font-bold text-white mb-2">เป้าหมายชัดเจน</h4>
+                    <p class="text-white/80">พัฒนาทักษะศิลปะและความคิดสร้างสรรค์</p>
+                </div>
+                <div class="bg-gradient-to-br from-blue-500/20 to-cyan-500/20 backdrop-blur-md rounded-2xl p-6 text-center transform hover:scale-105 transition-all duration-300 card-3d fade-in-up premium-hover" style="transition-delay: 0.1s;">
+                    <div class="text-5xl mb-4">🌟</div>
+                    <h4 class="text-xl font-bold text-white mb-2">โอกาสดีๆ</h4>
+                    <p class="text-white/80">แสดงผลงานในระดับประเทศ</p>
+                </div>
+                <div class="bg-gradient-to-br from-green-500/20 to-emerald-500/20 backdrop-blur-md rounded-2xl p-6 text-center transform hover:scale-105 transition-all duration-300 card-3d fade-in-up premium-hover" style="transition-delay: 0.2s;">
+                    <div class="text-5xl mb-4">💡</div>
+                    <h4 class="text-xl font-bold text-white mb-2">เรียนรู้จากผู้เชี่ยวชาญ</h4>
+                    <p class="text-white/80">คำแนะนำจากศิลปินมืออาชีพ</p>
+                </div>
+            </div>
+            
+            <!-- QR Code Section -->
+            <div class="bg-gradient-to-br from-white/20 to-white/10 backdrop-blur-lg rounded-3xl p-12 text-center fade-in-up premium-hover">
+                <h3 class="text-3xl font-bold text-white mb-8">📱 สแกน QR Code หรือคลิกปุ่มด้านบน</h3>
+                <div class="inline-block bg-white p-6 rounded-2xl shadow-2xl transform hover:scale-105 transition-all duration-300">
+                    <img src="https://lh5.googleusercontent.com/d/1CFKcvf0ImU069OM3RfWf_mu9ydxW6RpZ" 
+                         alt="QR Code สมัครเข้าร่วมกิจกรรม" 
+                         class="w-64 h-64 mx-auto">
+                </div>
+                <p class="mt-6 text-xl text-white/90">
+                    สมัครง่าย รวดเร็ว ปลอดภัย
+                </p>
+            </div>
+            
             <!-- Footer -->
-            <div class="text-center mt-8 text-white">
-                <p class="text-lg">มาร่วมสร้างสรรค์ผลงานศิลปะไปด้วยกัน 🎨✨</p>
+            <div class="text-center mt-16 text-white">
+                <p class="text-2xl font-semibold mb-4">มาร่วมสร้างสรรค์ผลงานศิลปะไปด้วยกัน 🎨✨</p>
+                <p class="text-lg opacity-80">ติดตามข่าวสารเพิ่มเติมได้ที่...</p>
             </div>
         </div>
     </div>
     
     <script>
-        // Dark mode toggle
-        const darkModeToggle = document.getElementById('darkModeToggle');
-        const sunIcon = document.getElementById('sunIcon');
-        const moonIcon = document.getElementById('moonIcon');
-        const body = document.body;
-        
-        darkModeToggle.addEventListener('click', () => {
-            body.classList.toggle('dark-mode');
-            sunIcon.classList.toggle('hidden');
-            moonIcon.classList.toggle('hidden');
+        // Countdown Timer
+        function updateCountdown() {
+            const endDate = new Date('2025-08-08T23:59:59').getTime();
+            const now = new Date().getTime();
+            const timeLeft = endDate - now;
             
-            // Change gradient background for dark mode
-            if (body.classList.contains('dark-mode')) {
-                body.style.background = 'linear-gradient(-45deg, #0f3460, #16213e, #1a1a2e, #0f0e17)';
+            if (timeLeft > 0) {
+                const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+                
+                document.getElementById('days').textContent = String(days).padStart(2, '0');
+                document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+                document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+                document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
             } else {
-                body.style.background = '';
+                document.getElementById('countdown').innerHTML = '<div class="text-2xl font-bold text-red-400">หมดเวลารับสมัครแล้ว</div>';
             }
-        });
-        
-        // Add random sparkles
-        function createSparkle() {
-            const sparkle = document.createElement('div');
-            sparkle.className = 'sparkle';
-            sparkle.style.top = Math.random() * 100 + '%';
-            sparkle.style.left = Math.random() * 100 + '%';
-            sparkle.style.animationDelay = Math.random() * 2 + 's';
-            document.body.appendChild(sparkle);
-            
-            setTimeout(() => {
-                sparkle.remove();
-            }, 2000);
         }
         
-        setInterval(createSparkle, 500);
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
         
-        // Smooth scroll effect
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
+        // Particle animation
+        const canvas = document.getElementById('particles-canvas');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        const particles = [];
+        const particleCount = 50;
+        
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 5 + 1;
+                this.speedX = Math.random() * 3 - 1.5;
+                this.speedY = Math.random() * 3 - 1.5;
+                this.color = `hsla(${Math.random() * 360}, 70%, 60%, 0.8)`;
+            }
+            
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                
+                if (this.x > canvas.width) this.x = 0;
+                if (this.x < 0) this.x = canvas.width;
+                if (this.y > canvas.height) this.y = 0;
+                if (this.y < 0) this.y = canvas.height;
+            }
+            
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+        
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+        
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
             });
+            
+            requestAnimationFrame(animateParticles);
+        }
+        
+        animateParticles();
+        
+        // Resize canvas on window resize
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+        
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    
+                    // Stagger animations for items
+                    if (entry.target.classList.contains('stagger-item')) {
+                        const items = entry.target.parentElement.parentElement.querySelectorAll('.stagger-item');
+                        items.forEach((item, index) => {
+                            setTimeout(() => {
+                                item.classList.add('active');
+                            }, index * 100);
+                        });
+                    }
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('.fade-in-up, .stagger-item').forEach(el => {
+            observer.observe(el);
+        });
+        
+        // Magnetic button effect
+        document.querySelectorAll('.magnetic-button').forEach(button => {
+            button.addEventListener('mousemove', (e) => {
+                const rect = button.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                
+                button.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px) scale(1.05)`;
+            });
+            
+            button.addEventListener('mouseleave', () => {
+                button.style.transform = 'translate(0, 0) scale(1)';
+            });
+        });
+        
+        // Parallax effect on scroll
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallaxElements = document.querySelectorAll('.paint-drop, .blob');
+            
+            parallaxElements.forEach((el, index) => {
+                const speed = 0.5 + (index * 0.1);
+                el.style.transform = `translateY(${scrolled * speed}px)`;
+            });
+        });
+        
+        // Add smooth page load animation
+        window.addEventListener('load', () => {
+            document.body.style.opacity = '0';
+            setTimeout(() => {
+                document.body.style.transition = 'opacity 1s ease';
+                document.body.style.opacity = '1';
+            }, 100);
         });
     </script>
 </body>
